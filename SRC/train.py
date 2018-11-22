@@ -1,6 +1,6 @@
 import sys
 from keras.preprocessing.image import ImageDataGenerator
-model.load(sys.argv[1])
+keras.models.load_model(sys.argv[1])
 import cv2
 i=1
 now_dir=sys.argv[6]
