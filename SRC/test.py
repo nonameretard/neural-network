@@ -7,10 +7,9 @@ import sys
 import cv2
 i=1
 cap = cv2.VideoCapture(0)
-train_dir='C:/Users/Khimer/PycharmProjects/untitled/train'
-val_dir='C:/Users/Khimer/PycharmProjects/untitled/val'
-test_dir='C:/Users/Khimer/PycharmProjects/untitled/test'
-now_dir='C:/Users/Khimer/PycharmProjects/untitled/now'
+train_dir=sys.argv[3]
+val_dir=sys.argv[4]
+test_dir=sys.argv[5]
 img_width, img_height=150,150
 input_share=(img_width,img_height,3)
 epstring=int(sys.argv[2])
@@ -19,7 +18,6 @@ batch_size=10
 nb_train_samples=1300
 nb_validation_samples=280
 nb_test_samples=280
-nb_now_samples=1
 
 model=Sequential()
 model.add(Conv2D(32,(3,3),input_shape=input_share))
@@ -58,4 +56,6 @@ testgen=ImageDataGenerator(rescale=1./255)
 model.fit_generator(train_generator,steps_per_epoch=nb_train_samples//batch_size,epochs=epochs,
                     validation_data=val_generator,
                     validation_steps=nb_validation_samples//batch_size)
+scores=model.evaluate_generator(test_generator, nb_test_samples//batch_size)
+print("Точность на тестовых данных: %.2f%%"%(scores[1]*100))
 model.save(sys.argv[1])
